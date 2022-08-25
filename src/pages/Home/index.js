@@ -1,30 +1,34 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
-import { Heading, VStack, Input } from "@chakra-ui/react";
-import { useLocation } from "wouter";
-import useGifs from "../../hooks/useGifs";
-import ListOfGifs from "../../components/ListOfGifs";
-import LazyTrendingSearches from "../../components/TrendingSearches";
+import { useState } from 'react';
+import { Heading, VStack, Input, Button, HStack } from '@chakra-ui/react';
+import { useLocation } from 'wouter';
+import useGifs from '../../hooks/useGifs';
+import ListOfGifs from '../../components/ListOfGifs';
+import LazyTrendingSearches from '../../components/TrendingSearches';
 
 function Home() {
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [location, setLocation] = useLocation();
   const { loading, gifs } = useGifs();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     setLocation(`/search/${keyword}`);
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setKeyword(e.target.value);
   };
 
   return (
     <VStack spacing={2}>
       <form onSubmit={handleSubmit}>
-        <Input onChange={handleChange} placeholder="Basic usage" />
-        {/* <input onChange={handleChange} placeholder="Native input" /> */}
+        <HStack>
+          <Input onChange={handleChange} placeholder="Flinstones..." />
+          <Button type="submit" mt={2} colorScheme="blue">
+            Search
+          </Button>
+        </HStack>
       </form>
       <div>
         <Heading>Last search</Heading>
