@@ -1,41 +1,39 @@
-import React from 'react';
 import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
+  Container,
   VStack,
-  Code,
-  Grid,
-  theme,
+  Box,
+  Heading,
+  Link as LinkChakra,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import { Link, Route } from 'wouter';
+import SearchResults from './pages/SearchResults';
+import Home from './pages/Home';
+import Detail from './pages/Detail';
+import { GifsContextProvider } from './context/GifsContext';
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
-    </ChakraProvider>
+    <Container maxW="container.xl">
+      <VStack spacing={3}>
+        <Box>
+          <Heading fontSize="4xl">
+            <LinkChakra as={Link} to="/">
+              Gifu App
+            </LinkChakra>
+          </Heading>
+        </Box>
+        <Box w="100%">
+          {/* wrap only the routes of our app with the provider */}
+          <GifsContextProvider>
+            {/* Set routes of the app in the declarative way */}
+            <Route component={Home} path="/" />
+            {/* <Route component={ListGifs} path="/gif/:keyword"></Route> */}
+            <Route component={SearchResults} path="/search/:keyword" />
+            <Route component={Detail} path="/gif/:id" />
+          </GifsContextProvider>
+        </Box>
+      </VStack>
+    </Container>
   );
 }
 

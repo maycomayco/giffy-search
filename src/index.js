@@ -1,4 +1,4 @@
-import { ColorModeScript } from '@chakra-ui/react';
+/* import { ColorModeScript } from '@chakra-ui/react';
 import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
@@ -24,3 +24,29 @@ serviceWorker.unregister();
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+ */
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import App from './App';
+
+// remove to external file
+const styles = {
+  global: () => ({
+    body: {
+      bg: 'gray.900',
+      color: 'gray.50',
+    },
+  }),
+};
+
+const theme = extendTheme({ styles });
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <ChakraProvider theme={theme}>
+      <App />
+    </ChakraProvider>
+  </React.StrictMode>
+);
