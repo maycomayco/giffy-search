@@ -1,35 +1,28 @@
-/* eslint-disable no-unused-vars */
-import { useState } from 'react';
-import { Heading, VStack, Input, Button, HStack } from '@chakra-ui/react';
+import { useCallback } from 'react';
+import { Heading, VStack } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
 import useGifs from '../../hooks/useGifs';
 import ListOfGifs from '../../components/ListOfGifs';
 import LazyTrendingSearches from '../../components/TrendingSearches';
+import SearchForm from '../../components/SearchForm';
 
 function Home() {
-  const [keyword, setKeyword] = useState('');
   const [location, setLocation] = useLocation();
   const { loading, gifs } = useGifs();
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    setLocation(`/search/${keyword}`);
-  };
+  /*
+    - useCallabck() is a hook that returns a memoized callback, and it will only change if one of the dependencies has changed.
+  */
+  const handleSubmit = useCallback(
+    keyword => setLocation(`/search/${keyword}`),
+    [setLocation]
+  );
 
-  const handleChange = e => {
-    setKeyword(e.target.value);
-  };
+  // const handleSubmit = keyword => setLocation(`/search/${keyword}`);
 
   return (
     <VStack spacing={2}>
-      <form onSubmit={handleSubmit}>
-        <HStack>
-          <Input onChange={handleChange} placeholder="Flinstones..." />
-          <Button type="submit" mt={2} colorScheme="blue">
-            Search
-          </Button>
-        </HStack>
-      </form>
+      <SearchForm onSubmit={handleSubmit} />
       <div>
         <Heading>Last search</Heading>
         <ListOfGifs gifs={gifs} />
