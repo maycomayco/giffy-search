@@ -1,17 +1,20 @@
-import { API_KEY, API_URL } from "./settings";
+import { API_KEY, API_URL } from './settings';
 
-/* Hacer el transform para poder reutilizarlo en ambos endpoints */
+/*
+  Hacer el transform para poder reutilizarlo en ambos endpoints
+  Se debe descomponer este archivo en distintos servicios individuales
+*/
 
-export const getGifs = ({ keyword = "monday", limit = 5, page = 0 } = {}) => {
+export const getGifs = ({ keyword = 'monday', limit = 5, page = 0 } = {}) => {
   // for the pagination we need to use the offset property to get the correct "page number"
   const offset = limit * page;
 
   const apiURL = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${offset}&rating=g&lang=en`;
   return fetch(apiURL)
-    .then((resp) => resp.json())
-    .then((resp) => {
+    .then(resp => resp.json())
+    .then(resp => {
       const { data } = resp;
-      const gifs = data.map((elem) => {
+      const gifs = data.map(elem => {
         const {
           id,
           title,
@@ -33,7 +36,7 @@ export const getTrendingGifs = async () => {
   const { data } = await resp.json(); // obtengo solo la property que necesito
 
   // esto deberia ser un transform, de lo que me devuelve la API original y lo que realmente necesita mi App
-  const gifs = data.map((elem) => {
+  const gifs = data.map(elem => {
     const {
       id,
       title,
@@ -50,8 +53,8 @@ export const getTrendingGifs = async () => {
 export const getTrendingTerms = () => {
   const apiURL = `${API_URL}/trending/searches?api_key=${API_KEY}`;
   return fetch(apiURL)
-    .then((resp) => resp.json())
-    .then((resp) => {
+    .then(resp => resp.json())
+    .then(resp => {
       const { data } = resp;
 
       return data;

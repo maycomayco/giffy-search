@@ -1,9 +1,11 @@
 import { Text } from '@chakra-ui/react';
 import { useRef, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet';
 import debounce from 'just-debounce-it';
 import useGifs from '../../hooks/useGifs';
 import ListOfGifs from '../../components/ListOfGifs';
 import useNearScreen from '../../hooks/useNearScreen';
+import SearchForm from '../../components/SearchForm';
 
 const SearchResults = ({ params }) => {
   const { keyword } = params;
@@ -14,7 +16,7 @@ const SearchResults = ({ params }) => {
     once: false,
   });
 
-  // const debouncedHandleNextPage = useRef();
+  const title = gifs ? `Results for ${decodeURI(keyword)}` : '';
 
   const handleNextPage = () => {
     // update the value of page
@@ -44,11 +46,14 @@ const SearchResults = ({ params }) => {
         <b>cargando...</b>
       ) : (
         <>
+          <Helmet>
+            <title>{title} | Giffy</title>
+            <meta name="description" content={title} />
+          </Helmet>
+          <SearchForm />
+
           <Text fontSize="2xl">{decodeURI(keyword)}</Text>
           <ListOfGifs gifs={gifs} />
-          {/* <Button colorScheme="blue" onClick={handleOnClick}>
-            Get next page
-          </Button> */}
           <div id="visor" ref={externalRef} />
         </>
       )}

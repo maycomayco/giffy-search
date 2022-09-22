@@ -1,16 +1,20 @@
-import { List, ListItem, Link as LinkChakra } from "@chakra-ui/react";
-import { Link } from "wouter";
+import { Link as LinkChakra, Wrap, WrapItem, Box } from '@chakra-ui/react';
+import { Link } from 'wouter';
 
 const Category = ({ options = [] }) => (
-  <List>
-    {options.map((elem) => (
-      <ListItem key={elem}>
-        <LinkChakra as={Link} to={`/search/${elem}`}>
-          {elem}
-        </LinkChakra>
-      </ListItem>
-    ))}
-  </List>
+  <>
+    <Wrap>
+      {options.map(elem => (
+        <WrapItem key={elem}>
+          <Box bg="blue.500" p={1}>
+            <LinkChakra as={Link} to={`/search/${elem}`}>
+              {elem}
+            </LinkChakra>
+          </Box>
+        </WrapItem>
+      ))}
+    </Wrap>
+  </>
 );
 
 export default Category;
