@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import { Input, Button, HStack } from '@chakra-ui/react';
+import { useLocation } from 'wouter';
 
 const SearchForm = ({ onSubmit }) => {
   const [keyword, setKeyword] = useState('');
+  const [_, setLocation] = useLocation();
+
+  /*
+    - useCallabck() is a hook that returns a memoized callback, and it will only change if one of the dependencies has changed.
+  */
+  // const handleSubmit2 = keyword => setLocation(`/search/${keyword}`);
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit(keyword);
+    // onSubmit(keyword);
+    setLocation(`/search/${keyword}`);
   };
 
   const handleChange = e => {
@@ -16,8 +24,12 @@ const SearchForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <HStack>
-        <Input onChange={handleChange} placeholder="Flinstones..." />
-        <Button type="submit" mt={2} colorScheme="blue">
+        <Input
+          onChange={handleChange}
+          placeholder="Flinstones..."
+          borderRadius={0}
+        />
+        <Button type="submit" colorScheme="blue" borderRadius={0}>
           Search
         </Button>
       </HStack>

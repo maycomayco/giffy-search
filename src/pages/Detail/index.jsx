@@ -1,19 +1,34 @@
-// import { useContext } from "react";
-import GifsContext from "../../context/GifsContext";
-import Gif from "../../components/Gif";
-import useContextGifs from "../../hooks/useContextGifs";
+import { Spinner } from '@chakra-ui/react';
+import { Redirect } from 'wouter';
+import Gif from '../../components/Gif';
+import useSingleGif from '../../hooks/useSingleGif';
+import { Helmet } from 'react-helmet';
 
-const Detail = ({ params }) => {
-  /*
-	TODO: if we refresh the page, we lost all the data, we need a callback to avoid that
-	*/
-  // load gifs from context
-  const gifs = useContextGifs();
+export default function Detail({ params }) {
+  const { gif, isLoading, isError } = useSingleGif({ id: params.id });
 
-  // search the gif given from param
-  const gif = gifs.find((gif) => gif.id === params.id);
+  const title = gif ? gif.title : '';
 
-  return <Gif {...gif} />;
-};
+  if (isLoading)
+    return (
+      <>
+        <Helmet>
+          <title>Loading...</title>
+        </Helmet>
+        <Spinner />
+      </>
+    );
+  // Redirect componet from wouter
+  if (isError) return <Redirect to="/404" />;
+  if (!gif) return null;
 
-export default Detail;
+  return (
+    <>
+      <Helmet>
+        <title>{gif.title} || Giffy</title>
+      </Helmet>
+      <h3>{gif.title}</h3>
+      <Gif {...gif} />
+    </>
+  );
+}
