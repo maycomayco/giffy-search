@@ -8,8 +8,8 @@ import useNearScreen from '../../hooks/useNearScreen';
 import SearchForm from '../../components/SearchForm';
 
 const SearchResults = ({ params }) => {
-  const { keyword } = params;
-  const { loading, gifs, setPage } = useGifs({ keyword });
+  const { keyword, rating = 'g' } = params;
+  const { loading, gifs, setPage } = useGifs({ keyword, rating });
   const externalRef = useRef();
   const { isNearScreen } = useNearScreen({
     externalRef: loading ? null : externalRef,
@@ -50,9 +50,11 @@ const SearchResults = ({ params }) => {
             <title>{title} | Giffy</title>
             <meta name="description" content={title} />
           </Helmet>
-          <SearchForm />
+          <SearchForm initialKeyword={keyword} initialRating={rating} />
 
-          <Text fontSize="2xl">{decodeURI(keyword)}</Text>
+          <Text fontSize="2xl">{`Search results for: ${decodeURI(
+            keyword
+          )}`}</Text>
           <ListOfGifs gifs={gifs} />
           <div id="visor" ref={externalRef} />
         </>
