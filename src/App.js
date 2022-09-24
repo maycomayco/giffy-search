@@ -36,7 +36,11 @@ function App() {
               */}
               <Route component={Home} path="/" />
               {/* <Route component={ListGifs} path="/gif/:keyword"></Route> */}
-              <Route component={SearchResults} path="/search/:keyword" />
+              {/* with ? symbol in wouter we say that param is optional */}
+              <Route
+                component={SearchResults}
+                path="/search/:keyword/:rating?"
+              />
               <Route component={Detail} path="/gif/:id" />
               <Route component={() => <h1>404 Error :(</h1>} path="/404" />
             </GifsContextProvider>

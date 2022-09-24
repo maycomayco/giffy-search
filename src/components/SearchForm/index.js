@@ -1,38 +1,56 @@
-import React, { useState } from 'react';
-import { Input, Button, HStack } from '@chakra-ui/react';
+import React from 'react';
+import { Input, Button, Flex, Select, Spacer } from '@chakra-ui/react';
 import { useLocation } from 'wouter';
+import useForm from './hook';
 
-const SearchForm = ({ onSubmit }) => {
-  const [keyword, setKeyword] = useState('');
+const RATINGS = ['g', 'pg', 'pg-13', 'r'];
+
+const SearchForm = ({ initialKeyword = '', initialRating = 'g' }) => {
   const [_, setLocation] = useLocation();
 
-  /*
-    - useCallabck() is a hook that returns a memoized callback, and it will only change if one of the dependencies has changed.
-  */
-  // const handleSubmit2 = keyword => setLocation(`/search/${keyword}`);
+  const { keyword, rating, times, updateKeyword, updateRating } = useForm({
+    initialKeyword,
+    initialRating,
+  });
+
+  const handleChange = e => {
+    updateKeyword(e.target.value);
+  };
+
+  const handleChangeRating = e => {
+    updateRating(e.target.value);
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
-    // onSubmit(keyword);
-    setLocation(`/search/${keyword}`);
-  };
-
-  const handleChange = e => {
-    setKeyword(e.target.value);
+    setLocation(`/search/${keyword}/${rating}`);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <HStack>
+      <Flex gap={1}>
         <Input
           onChange={handleChange}
           placeholder="Flinstones..."
-          borderRadius={0}
+          value={keyword}
         />
-        <Button type="submit" colorScheme="blue" borderRadius={0}>
+        <Spacer />
+        <Select
+          placeholder="Select rating"
+          value={rating}
+          w={150}
+          onChange={handleChangeRating}
+        >
+          {RATINGS.map(rating => (
+            <option key={rating}>{rating}</option>
+          ))}
+        </Select>
+        <Spacer />
+        <Button type="submit" colorScheme="blue" w={150}>
           Search
         </Button>
-      </HStack>
+        {times}
+      </Flex>
     </form>
   );
 };

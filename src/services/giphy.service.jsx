@@ -5,11 +5,16 @@ import { API_KEY, API_URL } from './settings';
   Se debe descomponer este archivo en distintos servicios individuales
 */
 
-export const getGifs = ({ keyword = 'monday', limit = 5, page = 0 } = {}) => {
+export const getGifs = ({
+  keyword = 'monday',
+  limit = 5,
+  page = 0,
+  rating = 'g',
+} = {}) => {
   // for the pagination we need to use the offset property to get the correct "page number"
   const offset = limit * page;
 
-  const apiURL = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${offset}&rating=g&lang=en`;
+  const apiURL = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${offset}&lang=en&rating=${rating}`;
   return fetch(apiURL)
     .then(resp => resp.json())
     .then(resp => {
